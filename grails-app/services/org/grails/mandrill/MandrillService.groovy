@@ -22,17 +22,18 @@ class MandrillService {
 	}
 
 
-	def send(MandrillMessage message) {
-
+	def send(MandrillMessage message, String apiKey = "") {
+		if(!apiKey) apiKey = grailsApplication.config.mandrill.apiKey
 		def path = "messages/send.json"
-		def query =  [key:grailsApplication.config.mandrill.apiKey,message:message]
+		def query =  [key:apiKey, message:message]
 		def data = JSON.parse(httpWrapperService.postText(BASE_URL, path ,query)).collect { new SendResponse(it) }
 		return data
 	}
 
-	def sendTemplate(MandrillMessage message, String templateName, List templateContent) {
+	def sendTemplate(MandrillMessage message, String templateName, List templateContent, String apiKey = "") {
+		if(!apiKey) apiKey = grailsApplication.config.mandrill.apiKey
 		def path = "messages/send-template.json"
-		def query =  [key:grailsApplication.config.mandrill.apiKey, template_name:templateName,
+		def query =  [key:apiKey, template_name:templateName,
 			template_content:templateContent, message:message]
 		def data = JSON.parse(httpWrapperService.postText(BASE_URL, path ,query)).collect { new SendResponse(it) }
 		return data
