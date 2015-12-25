@@ -5,5 +5,6 @@ class MandrillRecipient {
 
 	String email
 	String name
+	String type
 
 }
